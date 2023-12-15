@@ -49,3 +49,5 @@ const User = database.define(
 
     }
 )
+
+module.exports = User
