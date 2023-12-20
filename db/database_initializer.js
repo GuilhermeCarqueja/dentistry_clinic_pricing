@@ -1,8 +1,8 @@
 const sqlite3 = require('sqlite3').verbose()
 
 const db = require('./db.js')
-
-/* According to the SQLite documentation:
+/* 
+According to the SQLite documentation:
 
 The AUTOINCREMENT keyword imposes extra CPU, memory, disk space, and disk I/O overhead and should be avoided if not strictly needed. It is usually not needed.
 
@@ -11,7 +11,7 @@ In SQLite, a column with type INTEGER PRIMARY KEY is an alias for the ROWID (exc
 On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given a value, then it will be filled automatically with an unused integer, usually one more than the largest ROWID currently in use. This is true regardless of whether or not the AUTOINCREMENT keyword is used. 
 */
 
-QUERY_CREATE_USERS_TABLE = `
+const QUERY_CREATE_USERS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
     users (
         user_id INT PRIMARY KEY,
@@ -21,11 +21,12 @@ QUERY_CREATE_USERS_TABLE = `
         user_type CHARACTER(1) NOT NULL,
         user_name VARCHAR(300) NOT NULL,
         zip_code CHARACTER(8) NOT NULL,
-        address_complement VARCHAR(200)
+        address_complement VARCHAR(200),
+        inserted_at TEXT NOT NULL
     )
 `
 
-QUERY_CREATE_CLINICS_TABLE = `
+const QUERY_CREATE_CLINICS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
     clinics (
         clinic_id INT PRIMARY KEY,
@@ -36,20 +37,22 @@ QUERY_CREATE_CLINICS_TABLE = `
         number_of_chairs INT NO NULL,
         number_of_work_months FLOAT NOT NULL,
         user_id INT,
+        iserted_at TEXT NOT NULL,
         FOREIGN KEY (user_id) REFERENCES users(user_id)
     )
 `
-QUERY_CREATE_PROCEDURES_LIST_TABLE = `
+const QUERY_CREATE_PROCEDURES_LIST_TABLE = `
     CREATE TABLE IF NOT EXISTS 
     procedures_list (
         list_id INT PRIMARY KEY,
         list_name VARCHAR(200) NOT NULL,
         clinic_id INT,
+        inserted_at TEXT NOT NULL,
         FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
     )
 `
 
-QUERY_CREATE_RECURRENT_EXPENSES_TABLE = `
+const QUERY_CREATE_RECURRENT_EXPENSES_TABLE = `
     CREATE TABLE IF NOT EXISTS 
     clinic_current_expenses (
         expense_id INT PRIMARY KEY,
@@ -57,23 +60,25 @@ QUERY_CREATE_RECURRENT_EXPENSES_TABLE = `
         clinic_id INT,
         expense_value DOUBLE NOT NULL,
         expense_frequency CHARACTER(1) NOT NULL,
+        inserted_at TEXT NOT NULL,
         FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
     )
 `
 
-QUERY_CREATE_MATERIALS_TABLE = `
+const QUERY_CREATE_MATERIALS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
     materials (
         material_id INT PRIMARY KEY,
-        unit INT NOT NULL,
+        unit VARCHAR(10) NOT NULL,
         purchase_quantity FLOAT NOT NULL,
         purchase_cost float NOT NULL,
         clinic_id INT,
+        inserted_at TEXT NOT NULL,
         FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
     )
 `
 
-QUERY_CREATE_PROCEDURES_TABLE = `
+const QUERY_CREATE_PROCEDURES_TABLE = `
     CREATE TABLE IF NOT EXISTS 
     procedures (
         procedure_id INT PRIMARY KEY,
@@ -89,25 +94,24 @@ QUERY_CREATE_PROCEDURES_TABLE = `
         procedure_name VARCHAR(200) NOT NULL,
         final_price FLOAT NOT NULL,
         materials_cost NOT NULL,
-       
-
+        inserted_at TEXT NOT NULL,
         FOREIGN KEY(list_id) REFERENCES procedures_list(list_id)
     )
 `
 
-QUERY_CREATE_PROCEDURE_MATERIALS_TABLE = `
+const QUERY_CREATE_PROCEDURE_MATERIALS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
     procedure_materials (
         procedure_id INT,
         material_id INT,
-        unit INT NOT NULL,     
-
-        FOREIGN KEY(material_id) REFERENCES materials(material_id)
+        unit VARCHAR(10) NOT NULL,
+        inserted_at TEXT NOT NULL,     
+        FOREIGN KEY(material_id) REFERENCES materials(material_id),
         FOREIGN KEY(procedure_id) REFERENCES procedures(procedure_id)
-    )
-`
+        )
+    `
 
-queriesExecutionOrder = [
+const queriesExecutionOrder = [
     QUERY_CREATE_USERS_TABLE,
     QUERY_CREATE_CLINICS_TABLE,
     QUERY_CREATE_PROCEDURES_LIST_TABLE,
@@ -117,56 +121,45 @@ queriesExecutionOrder = [
     QUERY_CREATE_PROCEDURES_TABLE
 ]
 
+const tables = [
+    'users',
+    'clinics',
+    'procedures_list',
+    'materials',
+    'clinic_current_expenses',
+    'procedure_materials',
+    'procedures',
+]
 
-
-function initiateDatabase() {
-    queriesExecutionOrder.forEach(query=>{
-        try {
-            db.run(query)
-        } catch (error) {
-            console.log(query,error)
-        }
+function runQuery(query){
+    return new Promise((resolve,reject)=>{
+        db.run(query,err=>{
+            if (err){
+                reject(err)
+            }
+            else {
+                resolve(`EXECUTED QUERY ${query}`)
+            }
+        })
     })
 }
 
-initiateDatabase()
-
-// db.run("select * from users")
-
-// db.run("CREATE TABLE IF NOT EXISTS test_table(id INT, name VARCHAR(14))")
-
-// db.run("INSERT INTO test_table VALUES(1,'teste') ")
-
-
-function run_query(sql,params=[]) {
+async function delete_tables(){
     
-    pr = new Promise(
-        (resolve,reject)=>{
-            const query_results = [];
-
-            db.all(sql, params, (err, rows)=>{
-                rows.forEach(row=>{query_results.push(row)})
-                resolve(query_results);
-            });
-
-        }
-    )
-
-    return pr
-
+    for(let table of tables) {
+        await runQuery(`DROP TABLE IF EXISTS ${table}`)
+    }
+    
+}
+async function create_tables(){
+    for(let query of queriesExecutionOrder){
+        await runQuery(query);
+    }
 }
 
-
-async function testa(){
-    resultado = await run_query("SELECT * FROM users")
-
-    console.log(resultado)
+async function main(){
+    await delete_tables();
+    await create_tables();
+    db.close();
 }
-
-// testa()
-
-
-
-
-
-
+main()
