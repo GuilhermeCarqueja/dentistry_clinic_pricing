@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.AppDatabase = void 0;
 const sqlite3 = require('sqlite3').verbose();
 class AppDatabase {
     constructor() {
@@ -30,4 +31,4 @@ class AppDatabase {
         });
     }
 }
-module.exports = AppDatabase;
+exports.AppDatabase = AppDatabase;

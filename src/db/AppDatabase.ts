@@ -2,11 +2,11 @@ import { Database, sqlite3 } from "sqlite3";
 
 const sqlite3:sqlite3 = require('sqlite3').verbose()
 
-class AppDatabase {
+export class AppDatabase {
 
-    private readonly READ_ONLY_MODE:number;
-    private readonly READ_WRITE_MODE:number;
-    private DB_URL:string
+    protected readonly READ_ONLY_MODE:number;
+    protected readonly READ_WRITE_MODE:number;
+    protected DB_URL:string
 
     constructor(){
         this.READ_ONLY_MODE =  sqlite3.OPEN_READONLY;
@@ -17,7 +17,7 @@ class AppDatabase {
     public connectToDataBaseReadOnly(): Promise<Database>{
         return new Promise((resolve,reject)=>{
             try {
-                const db = new sqlite3.Database(this.DB_URL,this.READ_ONLY_MODE, (err:Error|null):void=>reject(err));
+                const db = new sqlite3.Database(this.DB_URL, this.READ_ONLY_MODE, (err:Error|null):void=>reject(err));
                 resolve(db)
             } catch (error) {
                 reject(error)
@@ -28,7 +28,7 @@ class AppDatabase {
     public connectToDataBaseReadAndWrite(): Promise<Database>{
         return new Promise((resolve,reject)=>{
             try {
-                const db = new sqlite3.Database(this.DB_URL,this.READ_WRITE_MODE ,(err:Error|null)=>reject(err));
+                const db = new sqlite3.Database(this.DB_URL, this.READ_WRITE_MODE ,(err:Error|null)=>reject(err));
                 resolve(db)
             } catch (error) {
                 reject(error)
@@ -37,4 +37,4 @@ class AppDatabase {
     }
 }
 
-module.exports = AppDatabase
+// module.exports = AppDatabase
