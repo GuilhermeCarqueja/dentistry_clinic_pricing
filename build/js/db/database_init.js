@@ -40,79 +40,79 @@ const QUERY_CREATE_CLINICS_TABLE = `
         FOREIGN KEY (user_id) REFERENCES users(user_id)
     )
 `;
-const QUERY_CREATE_PROCEDURES_LIST_TABLE = `
-    CREATE TABLE IF NOT EXISTS 
-    procedures_list (
-        list_id INT PRIMARY KEY,
-        list_name VARCHAR(200) NOT NULL,
-        clinic_id INT,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
-    )
-`;
 const QUERY_CREATE_RECURRENT_EXPENSES_TABLE = `
-    CREATE TABLE IF NOT EXISTS 
-    clinic_current_expenses (
-        expense_id INT PRIMARY KEY,
-        expense VARCHAR(200) NOT NULL,
-        clinic_id INT,
-        expense_value DOUBLE NOT NULL,
-        expense_frequency CHARACTER(1) NOT NULL,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
+CREATE TABLE IF NOT EXISTS 
+clinic_current_expenses (
+    expense_id INT PRIMARY KEY,
+    expense VARCHAR(200) NOT NULL,
+    clinic_id INT,
+    expense_value DOUBLE NOT NULL,
+    expense_frequency CHARACTER(1) NOT NULL,
+    inserted_at TEXT NOT NULL,
+    FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
     )
-`;
-const QUERY_CREATE_MATERIALS_TABLE = `
-    CREATE TABLE IF NOT EXISTS 
-    materials (
-        material_id INT PRIMARY KEY,
-        unit VARCHAR(10) NOT NULL,
-        purchase_quantity FLOAT NOT NULL,
-        purchase_cost float NOT NULL,
-        clinic_id INT,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
+    `;
+const QUERY_CREATE_PROCEDURES_LIST_TABLE = `
+CREATE TABLE IF NOT EXISTS 
+procedures_list (
+    list_id INT PRIMARY KEY,
+    list_name VARCHAR(200) NOT NULL,
+    clinic_id INT,
+    inserted_at TEXT NOT NULL,
+    FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
     )
-`;
+    `;
 const QUERY_CREATE_PROCEDURES_TABLE = `
-    CREATE TABLE IF NOT EXISTS 
-    procedures (
-        procedure_id INT PRIMARY KEY,
-        investment_fee FLOAT NOT NULL,
-        procedute_tax FLOAT NOT NULL,
-        minimum_price FLOAT NOT NULL,
-        professional_cost FLOAT NOT NULL,
-        profit_margin FLOAT NOT NULL,
-        precedure_max_payment_fee FLOAT NOT NULL,
-        procedure_time FLOAT NOT NULL,
-        procedure_time_cost FLOAT NO NULL,
-        list_id INT,
-        procedure_name VARCHAR(200) NOT NULL,
-        final_price FLOAT NOT NULL,
-        materials_cost NOT NULL,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(list_id) REFERENCES procedures_list(list_id)
+CREATE TABLE IF NOT EXISTS 
+procedures (
+    procedure_id INT PRIMARY KEY,
+    investment_fee FLOAT NOT NULL,
+    procedure_tax FLOAT NOT NULL,
+    minimum_price FLOAT NOT NULL,
+    professional_cost FLOAT NOT NULL,
+    profit_margin FLOAT NOT NULL,
+    precedure_max_payment_fee FLOAT NOT NULL,
+    procedure_time FLOAT NOT NULL,
+    procedure_time_cost FLOAT NO NULL,
+    list_id INT,
+    procedure_name VARCHAR(200) NOT NULL,
+    final_price FLOAT NOT NULL,
+    materials_cost NOT NULL,
+    inserted_at TEXT NOT NULL,
+    FOREIGN KEY(list_id) REFERENCES procedures_list(list_id)
+    )
+    `;
+const QUERY_CREATE_MATERIALS_TABLE = `
+CREATE TABLE IF NOT EXISTS 
+materials (
+    material_id INT PRIMARY KEY,
+    unit VARCHAR(10) NOT NULL,
+    purchase_quantity FLOAT NOT NULL,
+    purchase_cost float NOT NULL,
+    clinic_id INT,
+    inserted_at TEXT NOT NULL,
+    FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
     )
 `;
 const QUERY_CREATE_PROCEDURE_MATERIALS_TABLE = `
-    CREATE TABLE IF NOT EXISTS 
-    procedure_materials (
-        procedure_id INT,
-        material_id INT,
-        unit VARCHAR(10) NOT NULL,
-        inserted_at TEXT NOT NULL,     
-        FOREIGN KEY(material_id) REFERENCES materials(material_id),
-        FOREIGN KEY(procedure_id) REFERENCES procedures(procedure_id)
-        )
-    `;
+CREATE TABLE IF NOT EXISTS 
+procedure_materials (
+    procedure_id INT,
+    material_id INT,
+    unit VARCHAR(10) NOT NULL,
+    inserted_at TEXT NOT NULL,     
+    FOREIGN KEY(material_id) REFERENCES materials(material_id),
+    FOREIGN KEY(procedure_id) REFERENCES procedures(procedure_id)
+    )
+`;
 const queriesExecutionOrder = [
     QUERY_CREATE_USERS_TABLE,
     QUERY_CREATE_CLINICS_TABLE,
+    QUERY_CREATE_PROCEDURES_TABLE,
     QUERY_CREATE_PROCEDURES_LIST_TABLE,
     QUERY_CREATE_MATERIALS_TABLE,
     QUERY_CREATE_RECURRENT_EXPENSES_TABLE,
     QUERY_CREATE_PROCEDURE_MATERIALS_TABLE,
-    QUERY_CREATE_PROCEDURES_TABLE
 ];
 const tables = [
     'users',

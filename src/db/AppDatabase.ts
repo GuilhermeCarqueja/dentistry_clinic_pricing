@@ -17,7 +17,7 @@ export class AppDatabase {
     public connectToDataBaseReadOnly(): Promise<Database>{
         return new Promise((resolve,reject)=>{
             try {
-                const db = new sqlite3.Database(this.DB_URL, this.READ_ONLY_MODE, (err:Error|null):void=>reject(err));
+                const db:Database = new sqlite3.Database(this.DB_URL, this.READ_ONLY_MODE, (err:Error|null):void=>reject(err));
                 resolve(db)
             } catch (error) {
                 reject(error)
@@ -28,7 +28,7 @@ export class AppDatabase {
     public connectToDataBaseReadAndWrite(): Promise<Database>{
         return new Promise((resolve,reject)=>{
             try {
-                const db = new sqlite3.Database(this.DB_URL, this.READ_WRITE_MODE ,(err:Error|null)=>reject(err));
+                const db:Database = new sqlite3.Database(this.DB_URL, this.READ_WRITE_MODE ,(err:Error|null)=>reject(err));
                 resolve(db)
             } catch (error) {
                 reject(error)
