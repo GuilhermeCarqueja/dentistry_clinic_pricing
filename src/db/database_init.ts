@@ -59,64 +59,64 @@ const QUERY_CREATE_RECURRENT_EXPENSES_TABLE: string = `
         )
 `
 const QUERY_CREATE_PROCEDURES_LIST_TABLE: string = `
-CREATE TABLE IF NOT EXISTS 
-    procedures_list (
-        list_id INTEGER PRIMARY KEY,
-        list_name VARCHAR(200) NOT NULL,
-        clinic_id INTEGER NOT NULL,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
-    )
+    CREATE TABLE IF NOT EXISTS 
+        procedures_list (
+            list_id INTEGER PRIMARY KEY,
+            list_name VARCHAR(200) NOT NULL,
+            clinic_id INTEGER NOT NULL,
+            inserted_at TEXT NOT NULL,
+            FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
+        )
 `
         
 const QUERY_CREATE_PROCEDURES_TABLE: string = `
-CREATE TABLE IF NOT EXISTS 
-    procedures (
-        procedure_id INTEGER PRIMARY KEY,
-        
-        investment_fee FLOAT,
-        procedure_tax FLOAT,
-        minimum_price FLOAT,
-        professional_cost FLOAT,
-        profit_margin FLOAT,
-        precedure_max_payment_rate FLOAT,
-        precedure_max_payment_cost FLOAT,
-        procedure_time FLOAT,
-        procedure_time_cost FLOAT,
-        list_id INTEGER,
-        procedure_name VARCHAR(200) NOT NULL,
-        final_price FLOAT,
-        materials_cost,
+    CREATE TABLE IF NOT EXISTS 
+        procedures (
+            procedure_id INTEGER PRIMARY KEY,
+            
+            investment_fee FLOAT,
+            procedure_tax FLOAT,
+            minimum_price FLOAT,
+            professional_cost FLOAT,
+            profit_margin FLOAT,
+            precedure_max_payment_rate FLOAT,
+            precedure_max_payment_cost FLOAT,
+            procedure_time FLOAT,
+            procedure_time_cost FLOAT,
+            list_id INTEGER,
+            procedure_name VARCHAR(200) NOT NULL,
+            final_price FLOAT,
+            materials_cost,
 
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(list_id) REFERENCES procedures_list(list_id)
-    )
+            inserted_at TEXT NOT NULL,
+            FOREIGN KEY(list_id) REFERENCES procedures_list(list_id)
+        )
 `
 
 const QUERY_CREATE_MATERIALS_TABLE: string = `
-CREATE TABLE IF NOT EXISTS 
-    materials (
-        material_id INTEGER PRIMARY KEY,
-        unit VARCHAR(10) NOT NULL,
-        purchase_quantity FLOAT NOT NULL,
-        purchase_cost float NOT NULL,
-        clinic_id INTEGER,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
-    )
+    CREATE TABLE IF NOT EXISTS 
+        materials (
+            material_id INTEGER PRIMARY KEY,
+            unit VARCHAR(10) NOT NULL,
+            purchase_quantity FLOAT NOT NULL,
+            purchase_cost float NOT NULL,
+            clinic_id INTEGER,
+            inserted_at TEXT NOT NULL,
+            FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
+        )
 `
 
 const QUERY_CREATE_PROCEDURE_MATERIALS_TABLE: string = `
-CREATE TABLE IF NOT EXISTS 
-    procedure_materials (
-        procedure_id INTEGER NOT NULL,
-        material_id INTEGER NOT NULL,
-        unit VARCHAR(10) NOT NULL,
-        procedure_quantity FLOAT,
-        inserted_at TEXT NOT NULL,     
-        FOREIGN KEY(material_id) REFERENCES materials(material_id),
-        FOREIGN KEY(procedure_id) REFERENCES procedures(procedure_id)
-    )
+    CREATE TABLE IF NOT EXISTS 
+        procedure_materials (
+            procedure_id INTEGER NOT NULL,
+            material_id INTEGER NOT NULL,
+            unit VARCHAR(10) NOT NULL,
+            procedure_quantity FLOAT,
+            inserted_at TEXT NOT NULL,     
+            FOREIGN KEY(material_id) REFERENCES materials(material_id),
+            FOREIGN KEY(procedure_id) REFERENCES procedures(procedure_id)
+        )
 `
 
 const queriesExecutionOrder: Array<string> = [
