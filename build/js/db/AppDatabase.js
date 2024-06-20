@@ -3,15 +3,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.AppDatabase = void 0;
 const sqlite3 = require('sqlite3').verbose();
 class AppDatabase {
-    constructor() {
+    constructor(db_url) {
         this.READ_ONLY_MODE = sqlite3.OPEN_READONLY;
         this.READ_WRITE_MODE = sqlite3.OPEN_READWRITE;
-        this.DB_URL = './database.sqlite';
+        this.DB_URL = db_url;
     }
     connectToDataBaseReadOnly() {
         return new Promise((resolve, reject) => {
             try {
                 const db = new sqlite3.Database(this.DB_URL, this.READ_ONLY_MODE, (err) => reject(err));
+                console.log("connected");
                 resolve(db);
             }
             catch (error) {

@@ -10,7 +10,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const AppDatabase_js_1 = require("./AppDatabase.js");
-const appDatabase = new AppDatabase_js_1.AppDatabase();
+const sqlite3 = require('sqlite3').verbose();
+const appDatabase = new AppDatabase_js_1.AppDatabase("./database.sqlite");
 const QUERY_CREATE_USERS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         users (
@@ -55,61 +56,61 @@ const QUERY_CREATE_RECURRENT_EXPENSES_TABLE = `
         )
 `;
 const QUERY_CREATE_PROCEDURES_LIST_TABLE = `
-CREATE TABLE IF NOT EXISTS 
-    procedures_list (
-        list_id INTEGER PRIMARY KEY,
-        list_name VARCHAR(200) NOT NULL,
-        clinic_id INTEGER NOT NULL,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
-    )
+    CREATE TABLE IF NOT EXISTS 
+        procedures_list (
+            list_id INTEGER PRIMARY KEY,
+            list_name VARCHAR(200) NOT NULL,
+            clinic_id INTEGER NOT NULL,
+            inserted_at TEXT NOT NULL,
+            FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
+        )
 `;
 const QUERY_CREATE_PROCEDURES_TABLE = `
-CREATE TABLE IF NOT EXISTS 
-    procedures (
-        procedure_id INTEGER PRIMARY KEY,
-        
-        investment_fee FLOAT,
-        procedure_tax FLOAT,
-        minimum_price FLOAT,
-        professional_cost FLOAT,
-        profit_margin FLOAT,
-        precedure_max_payment_rate FLOAT,
-        precedure_max_payment_cost FLOAT,
-        procedure_time FLOAT,
-        procedure_time_cost FLOAT,
-        list_id INTEGER,
-        procedure_name VARCHAR(200) NOT NULL,
-        final_price FLOAT,
-        materials_cost,
+    CREATE TABLE IF NOT EXISTS 
+        procedures (
+            procedure_id INTEGER PRIMARY KEY,
+            
+            investment_fee FLOAT,
+            procedure_tax FLOAT,
+            minimum_price FLOAT,
+            professional_cost FLOAT,
+            profit_margin FLOAT,
+            precedure_max_payment_rate FLOAT,
+            precedure_max_payment_cost FLOAT,
+            procedure_time FLOAT,
+            procedure_time_cost FLOAT,
+            list_id INTEGER,
+            procedure_name VARCHAR(200) NOT NULL,
+            final_price FLOAT,
+            materials_cost,
 
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(list_id) REFERENCES procedures_list(list_id)
-    )
+            inserted_at TEXT NOT NULL,
+            FOREIGN KEY(list_id) REFERENCES procedures_list(list_id)
+        )
 `;
 const QUERY_CREATE_MATERIALS_TABLE = `
-CREATE TABLE IF NOT EXISTS 
-    materials (
-        material_id INTEGER PRIMARY KEY,
-        unit VARCHAR(10) NOT NULL,
-        purchase_quantity FLOAT NOT NULL,
-        purchase_cost float NOT NULL,
-        clinic_id INTEGER,
-        inserted_at TEXT NOT NULL,
-        FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
-    )
+    CREATE TABLE IF NOT EXISTS 
+        materials (
+            material_id INTEGER PRIMARY KEY,
+            unit VARCHAR(10) NOT NULL,
+            purchase_quantity FLOAT NOT NULL,
+            purchase_cost float NOT NULL,
+            clinic_id INTEGER,
+            inserted_at TEXT NOT NULL,
+            FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
+        )
 `;
 const QUERY_CREATE_PROCEDURE_MATERIALS_TABLE = `
-CREATE TABLE IF NOT EXISTS 
-    procedure_materials (
-        procedure_id INTEGER NOT NULL,
-        material_id INTEGER NOT NULL,
-        unit VARCHAR(10) NOT NULL,
-        procedure_quantity FLOAT,
-        inserted_at TEXT NOT NULL,     
-        FOREIGN KEY(material_id) REFERENCES materials(material_id),
-        FOREIGN KEY(procedure_id) REFERENCES procedures(procedure_id)
-    )
+    CREATE TABLE IF NOT EXISTS 
+        procedure_materials (
+            procedure_id INTEGER NOT NULL,
+            material_id INTEGER NOT NULL,
+            unit VARCHAR(10) NOT NULL,
+            procedure_quantity FLOAT,
+            inserted_at TEXT NOT NULL,     
+            FOREIGN KEY(material_id) REFERENCES materials(material_id),
+            FOREIGN KEY(procedure_id) REFERENCES procedures(procedure_id)
+        )
 `;
 const queriesExecutionOrder = [
     QUERY_CREATE_USERS_TABLE,
@@ -169,12 +170,14 @@ function truncateTables() {
     return __awaiter(this, void 0, void 0, function* () {
         for (let table of tables) {
             yield runQuery(`DELETE FROM  ${table} `);
+            console.log(table);
         }
     });
 }
 function main() {
     return __awaiter(this, void 0, void 0, function* () {
         deleteAndRecreateTables();
+        runQuery("CREATE TABLE test_table(A INT, B INT)");
     });
 }
 main();
