@@ -13,7 +13,7 @@ On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given
 
 const sqlite3:sqlite3 = require('sqlite3').verbose()
 
-const appDatabase = new AppDatabase("./database.sqlite");
+const appDatabase = new AppDatabase("../../db/database.sqlite");
 
 const QUERY_CREATE_USERS_TABLE: string = `
     CREATE TABLE IF NOT EXISTS 
@@ -187,8 +187,9 @@ async function truncateTables(): Promise<void>{
 }
 
 async function main(): Promise<void>{
-    deleteAndRecreateTables()
-    runQuery("CREATE TABLE test_table(A INT, B INT)")
+    console.log("testando")
+    await deleteAndRecreateTables()
+    // runQuery("CREATE TABLE test_table(A INT, B INT)")
     // runQuery("CREATE TABLE test_table(A INT, B INT)")
 }
 
