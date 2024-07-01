@@ -1,5 +1,4 @@
-import { Database, sqlite3 } from "sqlite3"
-import { AppDatabase } from "./database_functions/AppDatabase"
+import { AppDatabase } from "./database_functions/AppDatabase.js"
 
 
 const QUERY_CREATE_USERS_TABLE: string = `
@@ -129,10 +128,9 @@ const tables: Array<string> = [
     'procedures',
 ]
 
-const databaseURL: string = "../db/database.sqlite"
+const databaseURL: string = "./db/database.sqlite"
 const appDatabase = new AppDatabase(databaseURL);
-// const teste = new Database(databaseURL)
-            
+
 async function runQuery(query: string): Promise<string>{
     const db = await appDatabase.connectToDataBaseReadAndWrite();
     return new Promise((resolve,reject)=>{
@@ -165,6 +163,7 @@ async function create_tables(): Promise<void>{
 async function deleteAndRecreateTables(): Promise<void>{
     await delete_tables();
     await create_tables();
+    console.log("function was called")
 
 }
 
@@ -178,9 +177,10 @@ async function truncateTables(): Promise<void>{
 }
 
 async function main(): Promise<void>{
-    // deleteAndRecreateTables()
-    await runQuery("CREATE TABLE test_table(A INT, B INT)")
-    console.log("EXECUTOU")
+
+    await deleteAndRecreateTables()
+    // await runQuery("CREATE TABLE test_table(A INT, B INT)")
+    // console.log("EXECUTOU")
     // runQuery("DROP TABLE test_table")
 }
 

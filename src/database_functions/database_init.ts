@@ -1,6 +1,7 @@
 import { Database, sqlite3 } from "sqlite3"
 import { AppDatabase } from "./AppDatabase.js"
 
+
 /* 
 According to the SQLite documentation:
 
@@ -11,9 +12,9 @@ In SQLite, a column with type INTEGER PRIMARY KEY is an alias for the ROWID (exc
 On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given a value, then it will be filled automatically with an unused integer, usually one more than the largest ROWID currently in use. This is true regardless of whether or not the AUTOINCREMENT keyword is used. 
 */
 
-const sqlite3:sqlite3 = require('sqlite3').verbose()
 
-const appDatabase = new AppDatabase("../../db/database.sqlite");
+const databaseURL:string = "../../db/database.sqlite"
+const appDatabase = new AppDatabase(databaseURL);
 
 const QUERY_CREATE_USERS_TABLE: string = `
     CREATE TABLE IF NOT EXISTS 
@@ -187,10 +188,7 @@ async function truncateTables(): Promise<void>{
 }
 
 async function main(): Promise<void>{
-    console.log("testando")
     await deleteAndRecreateTables()
-    // runQuery("CREATE TABLE test_table(A INT, B INT)")
-    // runQuery("CREATE TABLE test_table(A INT, B INT)")
 }
 
 main()
