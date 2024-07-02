@@ -1,6 +1,6 @@
 import { Database, sqlite3 } from "sqlite3"
 import { AppDatabase } from "./AppDatabase.js"
-
+import path from "path"
 
 /* 
 According to the SQLite documentation:
@@ -13,7 +13,7 @@ On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given
 */
 
 
-const databaseURL:string = "../../db/database.sqlite"
+const databaseURL:string = "./db/database.sqlite"
 const appDatabase = new AppDatabase(databaseURL);
 
 const QUERY_CREATE_USERS_TABLE: string = `
@@ -187,8 +187,10 @@ async function truncateTables(): Promise<void>{
     
 }
 
-async function main(): Promise<void>{
+export async function main(): Promise<void>{
     await deleteAndRecreateTables()
 }
 
 main()
+
+
