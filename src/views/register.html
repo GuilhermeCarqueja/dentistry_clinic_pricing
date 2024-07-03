@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="css/regiter.css">
+</head>
+<body>
+    <div class="user-registration">
+        <form action="/user/create" method="post">
+            
+            <label>
+                Nome
+                <input type="text" name="user_name" id="user-name-input" required>
+            </label>
+
+            <label>
+                RUA
+                <input type="text" name="user_street" id="user-street-input" required>
+            </label>
+
+            <label>
+                NÚMERO
+                <input type="text" name="user_address_number" id="user-address-number-input" pattern="\d+" required title="Please enter a valid street number"> 
+            </label>
+            <label>
+                CEP
+                <input type="text" name="zip_code" id="user-zip-code-input" maxlength="8" required>
+            </label>
+            <label>
+                COMPLEMENTO
+                <input type="text" name="address_complement" id="user-complement-input">
+            </label>
+
+            <label>
+                EMAIL
+                <input type="email" name="user_email" id="user-email-input" required>
+            </label>
+            <label>
+                CPF/CNPJ
+                <input type="text" name="user_type" id="user-type-input" required >
+            </label>
+
+            <button type="submit">criar usuário</button>
+        </form>
+
+        <!-- users (
+            user_id INTEGER PRIMARY KEY,
+            user_street VARCHAR(200) NOT NULL,
+            user_address_number INTEGER NOT NULL,
+            user_email VARCHAR(100) NOT NULL,
+            user_type CHARACTER(1) NOT NULL,
+            user_name VARCHAR(300) NOT NULL,
+            zip_code CHARACTER(8) NOT NULL,
+            address_complement VARCHAR(200),
+            inserted_at TEXT NOT NULL
+        ) -->
+            
+    </div>
+</body>
+</html>

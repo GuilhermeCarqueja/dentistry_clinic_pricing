@@ -144,7 +144,7 @@ const tables: Array<string> = [
 ]
             
 async function runQuery(query: string): Promise<string>{
-    const db = await appDatabase.connectToDataBaseReadAndWrite();
+    const db:Database = await appDatabase.connectToDataBaseReadAndWrite();
     return new Promise((resolve,reject)=>{
         db.run(query,err=>{
             if (err){
