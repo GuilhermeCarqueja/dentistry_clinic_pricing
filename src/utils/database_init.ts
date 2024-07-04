@@ -25,6 +25,7 @@ const QUERY_CREATE_USERS_TABLE: string = `
             user_email VARCHAR(100) NOT NULL,
             user_type CHARACTER(1) NOT NULL,
             user_name VARCHAR(300) NOT NULL,
+            user_code VARCHAR(20) NOT NULL,
             zip_code CHARACTER(8) NOT NULL,
             address_complement VARCHAR(200),
             inserted_at TEXT NOT NULL
