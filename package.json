@@ -16,6 +16,7 @@
     "start": "nodemon ./dist/app.js",
     "build": "tsc",
     "copy-views": "copyfiles -u 1 src/views/* dist/",
-    "build-all": "npm run build && npm run copy-views"
+    "build-all": "npm run build && npm run copy-views",
+    "create-db": "node ./dist/utils/database_init.js"
   }
 }

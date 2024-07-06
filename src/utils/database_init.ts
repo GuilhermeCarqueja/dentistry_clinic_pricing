@@ -12,8 +12,8 @@ In SQLite, a column with type INTEGER PRIMARY KEY is an alias for the ROWID (exc
 On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given a value, then it will be filled automatically with an unused integer, usually one more than the largest ROWID currently in use. This is true regardless of whether or not the AUTOINCREMENT keyword is used. 
 */
 
-
-const databaseURL:string = "./db/database.sqlite"
+// const databaseURL:string = "./db/database.sqlite"
+const databaseURL:string = path.join(path.dirname(__dirname), "../db/database.sqlite")
 const appDatabase = new AppDatabase(databaseURL);
 
 const QUERY_CREATE_USERS_TABLE: string = `

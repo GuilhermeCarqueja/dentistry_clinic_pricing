@@ -1,9 +1,6 @@
 import path from "path";
 import { AppDatabase } from "./utils/AppDatabase.js"
-import {main} from "./utils/database_init.js"
 import express, { Request, Response, Express } from "express";
-
-// main()
 
 const app:Express = express()
 
@@ -33,18 +30,34 @@ app.post("/user/create", async (req:Request, res:Response)=>{
     const query_params = [req.body.user_name, req.body.user_street, parseInt(req.body.user_address_number), req.body.zip_code,req.body.address_complement,req.body.user_email, req.body.user_type,req.body.user_code, current_datetime_string]
     
     const query_insert_user = `
-        INSERT INTO users (user_name, user_street, user_address_number, zip_code, address_complement, user_email, user_type, user_code, inserted_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
+        INSERT INTO 
+            users (user_name, user_street, user_address_number, zip_code, address_complement, user_email, user_type, user_code, inserted_at) 
+        VALUES 
+            (?, ?, ?, ?, ?, ?, ?, ?, ? )
     `
-    const db = await conn.connectToDataBaseReadAndWrite();
+    try {
+        const db = await conn.connectToDataBaseReadAndWrite();
     
-    db.run(query_insert_user, query_params, err => {
-        if (err) {
-            console.log(err)
-            res.status(500).send("Error during user insertion into database")
-        } else {
-            res.status(200).send('User successfully added to database.')
-        }
-    })
+        db.run(query_insert_user, query_params, err => {
+            if (err) {
+                console.log(err)
+                res.status(500).send("Error during user insertion into database")
+            } else {
+                res.status(200).send('User successfully added to database.')
+            }
+        });
+        
+        db.close((closeErr) => {
+            if (closeErr) {
+                console.error("Error closing the database connection", closeErr);
+            }
+        });
+        
+    } catch (error) {
+        console.error("Error connecting to the database", error);
+        res.status(500).send("Error connecting to the database");
+    }
+        
 })
 
 app.get("/", (req:Request, res:Response) => {
@@ -53,6 +66,7 @@ app.get("/", (req:Request, res:Response) => {
     res.sendFile(path.join(root_folder_path, "src/views/register.html"))
 })
 
-app.listen(5000,()=>{
-    console.log(`App rodando na porta http://localhost:${5000}`)
+const PORT = 5000
+app.listen(PORT,()=>{
+    console.log(`App rodando na porta http://localhost:${PORT}`)
 })
