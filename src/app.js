@@ -1,20 +1,20 @@
 import path from "path";
 import { AppDatabase } from "./utils/AppDatabase.js"
-import express, { Request, Response, Express } from "express";
+import express from "express";
 
-const app:Express = express()
+const app = express()
 
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
 app.use(express.static('public'))
 
 
-const root_folder_path: string = path.dirname(__dirname)
+const root_folder_path = path.dirname(__dirname)
 
 
-app.post("/user/create", async (req:Request, res:Response)=>{
+app.post("/user/create", async (req, res)=>{
     // console.log(req.body)
-    const conn:AppDatabase = new AppDatabase(path.join(root_folder_path, "db/database.sqlite"))
+    const conn = new AppDatabase(path.join(root_folder_path, "db/database.sqlite"))
 
     const current_date = new Date()
     const year = current_date.getFullYear();
@@ -60,7 +60,7 @@ app.post("/user/create", async (req:Request, res:Response)=>{
         
 })
 
-app.get("/", (req:Request, res:Response) => {
+app.get("/", (req, res) => {
 
     console.log(path.dirname(__dirname))
     res.sendFile(path.join(root_folder_path, "src/views/register.html"))

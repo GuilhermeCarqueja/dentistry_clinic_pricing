@@ -1,12 +1,6 @@
 class Material {
-    material_id: number;
-    unit: string;
-    purchase_quantity: number;
-    purchase_cost: number;
-    clinic_id: number;
-    inserted_at: string;
 
-    constructor(material: any) {
+    constructor(material) {
         this.material_id = material.material_id;
         this.unit = material.unit;
         this.purchase_quantity = material.purchase_quantity;

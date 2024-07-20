@@ -1,4 +1,3 @@
-import { Database, sqlite3 } from "sqlite3"
 import { AppDatabase } from "./AppDatabase.js"
 import path from "path"
 
@@ -13,10 +12,10 @@ On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given
 */
 
 // const databaseURL:string = "./db/database.sqlite"
-const databaseURL:string = path.join(path.dirname(__dirname), "../db/database.sqlite")
+const databaseURL = path.join(path.dirname(__dirname), "../db/database.sqlite")
 const appDatabase = new AppDatabase(databaseURL);
 
-const QUERY_CREATE_USERS_TABLE: string = `
+const QUERY_CREATE_USERS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         users (
             user_id INTEGER PRIMARY KEY,
@@ -32,7 +31,7 @@ const QUERY_CREATE_USERS_TABLE: string = `
         )
 `
 
-const QUERY_CREATE_CLINICS_TABLE: string = `
+const QUERY_CREATE_CLINICS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         clinics (
             clinic_id INTEGER PRIMARY KEY,
@@ -51,7 +50,7 @@ const QUERY_CREATE_CLINICS_TABLE: string = `
 `
 
 
-const QUERY_CREATE_RECURRENT_EXPENSES_TABLE: string = `
+const QUERY_CREATE_RECURRENT_EXPENSES_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         clinic_current_expenses (
             expense_id INTEGER PRIMARY KEY,
@@ -63,7 +62,7 @@ const QUERY_CREATE_RECURRENT_EXPENSES_TABLE: string = `
             FOREIGN KEY(clinic_id) REFERENCES clinics(clinic_id)
         )
 `
-const QUERY_CREATE_PROCEDURES_LIST_TABLE: string = `
+const QUERY_CREATE_PROCEDURES_LIST_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         procedures_list (
             list_id INTEGER PRIMARY KEY,
@@ -74,7 +73,7 @@ const QUERY_CREATE_PROCEDURES_LIST_TABLE: string = `
         )
 `
         
-const QUERY_CREATE_PROCEDURES_TABLE: string = `
+const QUERY_CREATE_PROCEDURES_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         procedures (
             procedure_id INTEGER PRIMARY KEY,
@@ -98,7 +97,7 @@ const QUERY_CREATE_PROCEDURES_TABLE: string = `
         )
 `
 
-const QUERY_CREATE_MATERIALS_TABLE: string = `
+const QUERY_CREATE_MATERIALS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         materials (
             material_id INTEGER PRIMARY KEY,
@@ -111,7 +110,7 @@ const QUERY_CREATE_MATERIALS_TABLE: string = `
         )
 `
 
-const QUERY_CREATE_PROCEDURE_MATERIALS_TABLE: string = `
+const QUERY_CREATE_PROCEDURE_MATERIALS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
         procedure_materials (
             procedure_id INTEGER NOT NULL,
@@ -124,7 +123,7 @@ const QUERY_CREATE_PROCEDURE_MATERIALS_TABLE: string = `
         )
 `
 
-const queriesExecutionOrder: Array<string> = [
+const queriesExecutionOrder = [
     QUERY_CREATE_USERS_TABLE,
     QUERY_CREATE_CLINICS_TABLE,
     QUERY_CREATE_PROCEDURES_TABLE,
@@ -134,7 +133,7 @@ const queriesExecutionOrder: Array<string> = [
     QUERY_CREATE_PROCEDURE_MATERIALS_TABLE,
 ]
 
-const tables: Array<string> = [
+const tables = [
     'users',
     'clinics',
     'procedures_list',
@@ -144,8 +143,8 @@ const tables: Array<string> = [
     'procedures',
 ]
             
-async function runQuery(query: string): Promise<string>{
-    const db:Database = await appDatabase.connectToDataBaseReadAndWrite();
+async function runQuery(query) {
+    const db = await appDatabase.connectToDataBaseReadAndWrite();
     return new Promise((resolve,reject)=>{
         db.run(query,err=>{
             if (err){
@@ -159,7 +158,7 @@ async function runQuery(query: string): Promise<string>{
     })
 }
 
-async function delete_tables(): Promise<void>{
+async function delete_tables() {
     
     for(let table of tables) {
         await runQuery(`DROP TABLE IF EXISTS ${table}`)
@@ -167,19 +166,19 @@ async function delete_tables(): Promise<void>{
     
 }
 
-async function create_tables(): Promise<void>{
+async function create_tables() {
     for(let query of queriesExecutionOrder){
         await runQuery(query);
     }
 }
 
-async function deleteAndRecreateTables(): Promise<void>{
+async function deleteAndRecreateTables() {
     await delete_tables();
     await create_tables();
 
 }
 
-async function truncateTables(): Promise<void>{
+async function truncateTables() {
 
     for(let table of tables) {
         await runQuery(`DELETE FROM  ${table} `)
@@ -188,7 +187,7 @@ async function truncateTables(): Promise<void>{
     
 }
 
-export async function main(): Promise<void>{
+export async function main() {
     await deleteAndRecreateTables()
 }
 

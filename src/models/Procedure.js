@@ -1,21 +1,6 @@
 class Procedure {
-    procedure_id: number;
-    investment_fee: number;
-    procedure_tax: number;
-    minimum_price: number;
-    professional_cost: number;
-    profit_margin: number;
-    procedure_max_payment_rate: number;
-    procedure_max_payment_cost: number;
-    procedure_time: number;
-    procedure_time_cost: number;
-    list_id: number;
-    procedure_name: string;
-    final_price: number;
-    materials_cost: number;
-    inserted_at: string;
 
-    constructor(procedure: any) {
+    constructor(procedure) {
         this.procedure_id = procedure.procedure_id;
         this.investment_fee = procedure.investment_fee;
         this.procedure_tax = procedure.procedure_tax;

@@ -1,11 +1,6 @@
 class ProcedureMaterial {
-    procedure_id: number;
-    material_id: number;
-    unit: string;
-    procedure_quantity: number;
-    inserted_at: string;
 
-    constructor(procMaterial: any) {
+    constructor(procMaterial) {
         this.procedure_id = procMaterial.procedure_id;
         this.material_id = procMaterial.material_id;
         this.unit = procMaterial.unit;
