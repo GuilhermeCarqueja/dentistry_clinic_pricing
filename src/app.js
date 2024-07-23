@@ -1,6 +1,12 @@
 import path from "path";
 import { AppDatabase } from "./utils/AppDatabase.js"
 import express from "express";
+import { fileURLToPath } from 'url';
+// const express = require("express")
+// const path = require("path")
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
 
 const app = express()
 

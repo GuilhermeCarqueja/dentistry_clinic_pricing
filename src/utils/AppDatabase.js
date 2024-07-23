@@ -1,7 +1,6 @@
-import { Database, sqlite3 } from "sqlite3";
-
-const sqlite3 = require('sqlite3').verbose();
-
+// import { Database, sqlite3 } from "sqlite3";
+// import * as sqlite3 from "sqlite3"
+import sqlite3 from "sqlite3"
 export class AppDatabase {
 
     constructor(db_url) {

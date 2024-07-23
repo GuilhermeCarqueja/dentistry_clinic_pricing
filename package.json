@@ -6,17 +6,16 @@
     "sequelize": "^6.35.1",
     "sqlite3": "^5.1.6"
   },
+  "type": "module",
   "devDependencies": {
     "@types/express": "^4.17.21",
     "@types/node": "^20.14.9",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.3"
+    "ts-node": "^10.9.2"
   },
   "scripts": {
-    "start": "nodemon ./dist/app.js",
-    "build": "tsc",
+    "start": "nodemon ./src/app.js",
     "copy-views": "copyfiles -u 1 src/views/* dist/",
     "build-all": "npm run build && npm run copy-views",
-    "create-db": "node ./dist/utils/database_init.js"
+    "create-db": "node ./src/utils/database_init.js"
   }
 }

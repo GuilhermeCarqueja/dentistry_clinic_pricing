@@ -1,5 +1,6 @@
 import { AppDatabase } from "./AppDatabase.js"
 import path from "path"
+import { fileURLToPath } from 'url';
 
 /* 
 According to the SQLite documentation:
@@ -12,6 +13,13 @@ On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given
 */
 
 // const databaseURL:string = "./db/database.sqlite"
+
+
+const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
+const __dirname = path.dirname(__filename); // get the name of the directory
+
+
+console.log("DIRETORIO", __dirname,"\n" ,__filename)
 const databaseURL = path.join(path.dirname(__dirname), "../db/database.sqlite")
 const appDatabase = new AppDatabase(databaseURL);
 
