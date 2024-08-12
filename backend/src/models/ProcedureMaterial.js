@@ -1,4 +1,4 @@
-class ProcedureMaterial {
+export class ProcedureMaterial {
 
     constructor(procMaterial) {
         this.procedure_id = procMaterial.procedure_id;

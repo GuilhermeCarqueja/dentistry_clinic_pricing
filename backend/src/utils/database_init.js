@@ -1,7 +1,7 @@
 import { AppDatabase } from "./AppDatabase.js"
 import path from "path"
 import { fileURLToPath } from 'url';
-
+import sqlite3 from 'sqlite3'
 /* 
 According to the SQLite documentation:
 
@@ -14,14 +14,14 @@ On an INSERT, if the ROWID or INTEGER PRIMARY KEY column is not explicitly given
 
 // const databaseURL:string = "./db/database.sqlite"
 
-
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
 const __dirname = path.dirname(__filename); // get the name of the directory
 
 
 console.log("DIRETORIO", __dirname,"\n" ,__filename)
 const databaseURL = path.join(path.dirname(__dirname), "../db/database.sqlite")
-const appDatabase = new AppDatabase(databaseURL);
+// const appDatabase = new AppDatabase(databaseURL);
+const db = new sqlite3.Database(databaseURL);
 
 const QUERY_CREATE_USERS_TABLE = `
     CREATE TABLE IF NOT EXISTS 
@@ -29,7 +29,7 @@ const QUERY_CREATE_USERS_TABLE = `
             user_id INTEGER PRIMARY KEY,
             user_street VARCHAR(200) NOT NULL,
             user_address_number INTEGER NOT NULL,
-            user_email VARCHAR(100) NOT NULL,
+            user_email VARCHAR(100) NOT NULL UNIQUE,
             user_type CHARACTER(1) NOT NULL,
             user_name VARCHAR(300) NOT NULL,
             user_code VARCHAR(20) NOT NULL,
@@ -180,23 +180,29 @@ async function create_tables() {
     }
 }
 
-async function deleteAndRecreateTables() {
-    await delete_tables();
-    await create_tables();
+// async function deleteAndRecreateTables() {
+//     await delete_tables();
+//     await create_tables();
 
+// }
+
+function deleteAndRecreateTables() {
+    db.serialize(() => {
+        for (let q of queriesExecutionOrder) {
+            db.run(q)      
+        }
+    })
+}
+function truncateTables() {
+    db.serialize(() => {
+        for (let table of tables) {
+            db.run(`DELETE FROM  ${table} `)      
+        }
+    })
 }
 
-async function truncateTables() {
-
-    for(let table of tables) {
-        await runQuery(`DELETE FROM  ${table} `)
-        console.log(table)
-    }
-    
-}
-
-export async function main() {
-    await deleteAndRecreateTables()
+export function main() {
+    deleteAndRecreateTables()
 }
 
 main()

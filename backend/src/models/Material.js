@@ -1,4 +1,4 @@
-class Material {
+export class Material {
 
     constructor(material) {
         this.material_id = material.material_id;

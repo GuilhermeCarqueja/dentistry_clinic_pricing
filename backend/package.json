@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "handlebars": "^4.7.8",
     "nodemon": "^3.1.4",
     "sequelize": "^6.35.1",

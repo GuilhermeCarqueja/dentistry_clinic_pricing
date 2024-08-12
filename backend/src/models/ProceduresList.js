@@ -1,4 +1,4 @@
-class ProceduresList {
+export class ProceduresList {
 
     constructor(list) {
         this.list_id = list.list_id;

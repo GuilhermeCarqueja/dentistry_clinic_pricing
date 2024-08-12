@@ -1,4 +1,4 @@
-class ClinicCurrentExpense {
+export class ClinicCurrentExpense {
 
     constructor(expense) {
         this.expense_id = expense.expense_id;
