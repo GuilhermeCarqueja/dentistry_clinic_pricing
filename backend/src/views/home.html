@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
+    <link href="https://unpkg.com/tabulator-tables/dist/css/tabulator.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 </head>
 <body>
     Home page
@@ -11,7 +13,15 @@
     <div id="show_data">
 
     </div>
-    <script src="js/fetch_user_data.js"></script>
+    
+    <div>
+        <button id="reactivity-add">Add New Row</button>
+        <button id="reactivity-delete">Remove Row</button>
+        <button id="reactivity-update">Update First Row Name</button>
+    </div>
+    
+    <div id="example-table"></div>
 </body>
+<script src="js/fetch_user_data.js"></script>
 
 </html>

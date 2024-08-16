@@ -5,7 +5,8 @@
     "handlebars": "^4.7.8",
     "nodemon": "^3.1.4",
     "sequelize": "^6.35.1",
-    "sqlite3": "^5.1.6"
+    "sqlite3": "^5.1.6",
+    "tabulator-tables": "^6.2.5"
   },
   "type": "module",
   "devDependencies": {
