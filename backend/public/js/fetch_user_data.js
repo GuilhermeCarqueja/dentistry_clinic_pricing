@@ -1,4 +1,3 @@
-
 async function getData(){
     
     const res = await fetch("/clinics")
@@ -23,21 +22,27 @@ async function getData(){
         )
     `
     //define data
-    var tabledata = userClinics;
+    const tabledata = userClinics;
 
     //Build Tabulator
-    var table = new Tabulator("#example-table", {
+    const table = new Tabulator("#example-table", {
         height:"311px",
-        layout:"fitColumns",
+        layout:"fitDataTable",
         reactiveData:true, //turn on data reactivity
-        data:tabledata, //load data into table
+        data:userClinics, //load data into table
         columns:[
-            {title:"max_payment_fee", field:"max_payment_fee", editor:"input"},
+            {title:"max_payment_fee", field:"max_payment_fee", editor:"number", formatter:"precision"},
             {title:"tax_rate", field:"tax_rate", editor:"input"},
             {title:"number_of_daily_work_hours", field:"number_of_daily_work_hours", editor:"input"},
             {title:"clinic_name", field:"clinic_name", editor:"input"},
         ],
     });
+
+    table.on("dataChanged", function(data){
+        //data - the updated table data
+        document.getElementById("show_data").innerHTML = JSON.stringify(userClinics)
+    });
+
     // //define data
     // var tabledata = [
     //     {id:1, name:"Oli Bob", progress:12, gender:"male", rating:1, col:"red"},
@@ -64,18 +69,24 @@ async function getData(){
 
     //add row to bottom of table on button click
     document.getElementById("reactivity-add").addEventListener("click", function(){
-        tabledata.push({name:"IM A NEW ROW", progress:100, gender:"male"});
+        tabledata.push({});
+        document.getElementById("show_data").innerHTML = JSON.stringify(userClinics)
     });
 
     //remove bottom row from table on button click
     document.getElementById("reactivity-delete").addEventListener("click", function(){
         tabledata.pop();
+        document.getElementById("show_data").innerHTML = JSON.stringify(userClinics)
     });
 
     //update name on first row in table on button click
-    document.getElementById("reactivity-update").addEventListener("click", function(){
-        tabledata[0].name = "IVE BEEN UPDATED";
-    });
+    // document.getElementById("reactivity-update").addEventListener("click", function(){
+    //     tabledata[0].name = "IVE BEEN UPDATED";
+    // });
+
+    document.getElementById("show_data_button").addEventListener("click", ()=>{
+        console.log(userClinics, Object.keys(userClinics).length)
+    })
 
 }
 

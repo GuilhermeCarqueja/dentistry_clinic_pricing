@@ -8,16 +8,28 @@
     <script type="text/javascript" src="https://unpkg.com/tabulator-tables/dist/js/tabulator.min.js"></script>
 </head>
 <body>
-    Home page
+    
+    <div class="options-container">
+        <button id="clinics">
+            CLINICS
+        </button>
+        <button id="procedures">
+            PROCEDURES
+        </button>
+        <button id="procedures">
+            MATERIALS
+        </button>
+    </div>
 
     <div id="show_data">
 
     </div>
     
-    <div>
+    <div class="table-tabulator">
         <button id="reactivity-add">Add New Row</button>
         <button id="reactivity-delete">Remove Row</button>
-        <button id="reactivity-update">Update First Row Name</button>
+        <!-- <button id="reactivity-update">Update First Row Name</button> -->
+        <button id="show_data_button">Show Data</button>
     </div>
     
     <div id="example-table"></div>

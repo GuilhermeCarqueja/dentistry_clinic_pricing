@@ -9,7 +9,7 @@ import {Clinic} from "./models/Clinic.js"
 import {Procedure} from "./models/Procedure.js"
 
 import sqlite3 from "sqlite3"
-import { userInfo } from "os";
+import { type, userInfo } from "os";
 import { run } from "node:test";
 
 
@@ -126,26 +126,45 @@ app.post("/login", async (req, res) => {
     try {
         const {userEmail, userPassword} = req.body
         
-        const userData = await all_query(db, "SELECT * FROM users WHERE user_email = ? LIMIT 1",[userEmail])
-        
-        const userObject = new User(userData[0])
-        
-        const userId = userData[0].user_id;
+        const queryResponse = await all_query(db, "SELECT * FROM users WHERE user_email = ? LIMIT 1",[userEmail])
+        const userData = queryResponse[0]
+        const userId = userData.user_id;
 
+        const userClinics = await all_query(db, "SELECT * FROM clinics WHERE user_id = ?", [userId])
+        // const numberOfClinics = Object.keys(userClinics).length
+        const numberOfClinics = userClinics.length
         req.session.userId = userId;
-        req.session.user = userObject;
-
-        // const userClinics = await all_query(db, "SELECT * FROM clinics WHERE user_id = ?",[userId])
         
-        // console.log(UserInfo, userClinics)
-
-        res.sendFile(path.join(__dirname,"views","home.html" ))
+        if (numberOfClinics === 0) {
+            userData["clinics"] = []
+        }
+        else {
+            
+            userData["clinics"] = userClinics
+            for (let clinic of userData.clinics) {
+                const clinicProceduresList = await db.all_query(db, "SELECT * FROM procedures WHERE list_id IN (SELECT list_id FROM procedures_list WHERE clinic_id = ?)", [clinic.clinic_id])
+                clinic.proceduresList = clinicProceduresList
+            }   
+        }
+                
+        req.session.user = userData;
+        res.redirect("/home")
         
     } catch(error) {
         console.log("\n\n ERROR", error)
         res.end()
     }
     
+})
+
+app.get("/home", async (req, res) => {
+    
+    if(req.session.user.user_id) {
+        res.sendFile(path.join(__dirname,"views","home.html" ))
+    }
+    else {
+        res.redirect("/")
+    }
 })
 
 app.get("/clinics", async (req, res) => {
@@ -159,8 +178,6 @@ app.get("/clinics", async (req, res) => {
         res.redirect("/")
     }
 })
-
-
 
 app.get("/", (req, res) => {
 
