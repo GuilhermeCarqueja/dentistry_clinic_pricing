@@ -25,16 +25,20 @@ async function getData(){
     const tabledata = userClinics;
 
     //Build Tabulator
-    const table = new Tabulator("#example-table", {
+    const table = new Tabulator("#clinics-table", {
         height:"311px",
         layout:"fitDataTable",
         reactiveData:true, //turn on data reactivity
         data:userClinics, //load data into table
         columns:[
             {title:"max_payment_fee", field:"max_payment_fee", editor:"number", formatter:"precision"},
-            {title:"tax_rate", field:"tax_rate", editor:"input"},
-            {title:"number_of_daily_work_hours", field:"number_of_daily_work_hours", editor:"input"},
+            {title:"tax_rate", field:"tax_rate", editor:"number", formatter:"precision"},
+            {title:"number_of_daily_work_hours", field:"number_of_daily_work_hours", editor:"number"},
             {title:"clinic_name", field:"clinic_name", editor:"input"},
+            {title:"number_of_chairs", field:"number_of_chairs", editor:"number"},
+            {title:"number_of_work_months", field:"number_of_work_months", editor:"number"},
+            {title:"expected_vacancy", field:"expected_vacancy", editor:"number"},
+            {title:"time_cost", field:"time_cost", editor:"number"},
         ],
     });
 

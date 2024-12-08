@@ -4,13 +4,8 @@ import session from "express-session";
 import { fileURLToPath } from 'url';
 
 import { AppDatabase } from "./utils/AppDatabase.js"
-import {User} from "./models/User.js"
-import {Clinic} from "./models/Clinic.js"
-import {Procedure} from "./models/Procedure.js"
-
 import sqlite3 from "sqlite3"
-import { type, userInfo } from "os";
-import { run } from "node:test";
+
 
 
 const __filename = fileURLToPath(import.meta.url); // get the resolved path to the file
